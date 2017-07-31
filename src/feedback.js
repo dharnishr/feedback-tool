@@ -88,6 +88,7 @@ let EventHandler = utility .EventHandler;
                 $('#feedback-canvas').attr(canvasAttr).css('z-index', '30000');
 
                 if (!settings.initialBox) {
+                    $('#feedback-highlighter-back').remove();
                     canDraw = true;
                     $('#feedback-canvas').css('cursor', 'crosshair');
                     $('#feedback-helpers').show();
