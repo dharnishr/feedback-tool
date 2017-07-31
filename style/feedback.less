@@ -4,9 +4,10 @@
 .feedback-btn {
   font-size: 14px;
   position: fixed;
-  bottom: -3px;
-  right: 60px;
+  bottom: 50%;
+  right: -42px;
   width: auto;
+  transform: rotate(-90deg);
 }
 #feedback-module p {  font-size: 13px }
 #feedback-note-tmp {
@@ -14,7 +15,6 @@
   height: auto;
   min-height: 90px;
   outline: none;
-  font-family: @primary-font;
   padding: 4px;
 }
 #feedback-note-tmp:focus,
@@ -32,14 +32,14 @@
   position: fixed;
 }
 .feedback-logo {
-  background: url(icons.png) -0px -0px no-repeat;
+  background: url(icons.png) -16px -94px no-repeat;
   width: 34px;
   margin-bottom: 16px;
   font-size: 16px;
   font-weight: normal;
-  line-height: 32px;
+  line-height: 16px;
   padding-left: 40px;
-  height: 32px;
+  height: 16px;
 }
 .feedback-next-btn {
   width: @default-btn-width;
@@ -113,7 +113,7 @@
   right: 100px;
   position: fixed;
   width: 540px;
-  height: 275px;
+  height: 210px;
 }
 #feedback-overview {
   display: none;
@@ -144,7 +144,6 @@
 .feedback-btn-gray {
   text-align: center;
   cursor: pointer;
-  font-family: @button-font;
   border: 1px solid #dcdcdc;
   border: 1px solid rgba(0,0,0,0.1);
   color: #444;
@@ -161,7 +160,6 @@
 .feedback-btn-blue {
   text-align: center;
   cursor: pointer;
-  font-family: @button-font;
   .border-radius(2px);
   background-color: #357ae8;
   .gradient(#4d90fe,#357ae8);
@@ -175,7 +173,6 @@
 #feedback-overview,
 #feedback-submit-success,
 #feedback-submit-error {
-  font-family: @primary-font;
   z-index: 40000;
   background: #fff;
   border: 1px solid rgba(0,0,0,.333);
@@ -270,7 +267,6 @@
   padding: 4px;
   height: 90px;
   outline: none;
-  font-family: @primary-font;
 }
 #feedback-overview-screenshot {  float: right }
 .feedback-screenshot {
