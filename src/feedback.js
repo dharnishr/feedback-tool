@@ -538,7 +538,10 @@ let EventHandler = utility .EventHandler;
                             data: data,
                             post: post,
                             success: function () {
-                                $('#feedback-module').append(settings.tpl.submitSuccess);
+                                var success = $(settings.tpl.submitSuccess);
+                                if (settings.successMessage)
+                                  success.find('p').replaceWith('<p>'+settings.successMessage+'</p>');
+                                $('#feedback-module').append(success);
                             },
                             error: function () {
                                 $('#feedback-module').append(settings.tpl.submitError);
