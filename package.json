@@ -1,6 +1,6 @@
 {
   "name": "feedback-tool",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "description": "Website feedback tool.",
   "main": "dist/feedback.js",
   "scripts": {

@@ -1,9 +1,10 @@
 .feedback-btn {
   font-size: 14px;
   position: fixed;
-  bottom: -3px;
-  right: 60px;
+  bottom: 50%;
+  right: -42px;
   width: auto;
+  transform: rotate(-90deg);
 }
 #feedback-module p {
   font-size: 13px;
@@ -17,7 +18,11 @@
 }
 #feedback-note-tmp:focus,
 #feedback-overview-note:focus {
-  border: 1px solid #64b7cc;
+  outline: none !important;
+  -webkit-appearance: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
 }
 #feedback-canvas {
   position: absolute;
@@ -32,14 +37,14 @@
   position: fixed;
 }
 .feedback-logo {
-  background: url(icons.png) 0px 0px no-repeat;
+  background: url(icons.png) -16px -94px no-repeat;
   width: 34px;
   margin-bottom: 16px;
   font-size: 16px;
   font-weight: normal;
-  line-height: 32px;
+  line-height: 16px;
   padding-left: 40px;
-  height: 32px;
+  height: 16px;
 }
 .feedback-next-btn {
   width: 72px;
@@ -88,7 +93,7 @@
   width: 30px;
   height: 30px;
 }
-.feedback-wizard-close {
+div.feedback-wizard-close {
   cursor: pointer;
   position: absolute;
   top: 2px;
@@ -100,7 +105,7 @@
   -moz-opacity: 0.65;
   opacity: 0.65;
 }
-.feedback-wizard-close:hover {
+div.feedback-wizard-close:hover {
   opacity: 1;
 }
 #feedback-welcome-error,
@@ -121,7 +126,7 @@
   right: 100px;
   position: fixed;
   width: 540px;
-  height: 275px;
+  height: 210px;
 }
 #feedback-overview {
   display: none;
@@ -154,7 +159,6 @@
 .feedback-btn-gray {
   text-align: center;
   cursor: pointer;
-  font-family: 'Open sans';
   border: 1px solid #dcdcdc;
   border: 1px solid rgba(0, 0, 0, 0.1);
   color: #444;
@@ -184,7 +188,6 @@
 .feedback-btn-blue {
   text-align: center;
   cursor: pointer;
-  font-family: 'Open sans';
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
@@ -210,7 +213,6 @@
 #feedback-overview,
 #feedback-submit-success,
 #feedback-submit-error {
-  font-family: Arial, sans-serif;
   z-index: 40000;
   padding: 30px 42px;
   width: 540px;
@@ -337,9 +339,8 @@
 #feedback-overview-note {
   width: 314px;
   padding: 4px;
-  height: 90px;
+  max-height: 410px;
   outline: none;
-  font-family: Arial, sans-serif;
 }
 #feedback-overview-screenshot {
   float: right;

@@ -3622,7 +3622,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                         $('#feedback-canvas').attr(canvasAttr).css('z-index', '30000');
 
                         if (!settings.initialBox) {
-                            $('#feedback-highlighter-back').remove();
                             canDraw = true;
                             $('#feedback-canvas').css('cursor', 'crosshair');
                             $('#feedback-helpers').show();
@@ -3950,6 +3949,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                             $('#feedback-highlighter').hide();
                             $('#feedback-welcome-error').hide();
                             $('#feedback-welcome').show();
+                            if (!settings.initialBox) close();
                         });
 
                         $(document).on('mousedown', '.feedback-sethighlight', function () {
@@ -3996,9 +3996,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                                             $('#feedback-overview').toggleClass('feedback-desktop', false);
                                             $('#feedback-overview').toggleClass('feedback-mobile', true);
                                         }
-                                        $('#feedback-overview-description-text>textarea').remove();
                                         $('#feedback-overview-screenshot>img').remove();
-                                        $('<textarea id="feedback-overview-note">' + $('#feedback-note').val() + '</textarea>').insertAfter('#feedback-overview-description-text h3:eq(0)');
                                         $('#feedback-overview-screenshot').append('<img class="feedback-screenshot" src="' + img + '" />');
                                     } else {
                                         $('#feedback-module').remove();
@@ -4040,13 +4038,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                                 post.img = img;
                                 post.note = $('#feedback-note').val();
                                 var data = { feedback: JSON.stringify(post) };
-                                $.ajax({
+                                settings.postFunction({
                                     url: settings.ajaxURL,
                                     dataType: 'json',
                                     type: 'POST',
                                     data: data,
+                                    post: post,
                                     success: function success() {
-                                        $('#feedback-module').append(settings.tpl.submitSuccess);
+                                        var success = $(settings.tpl.submitSuccess);
+                                        if (settings.successMessage) success.find('p').replaceWith('<p>' + settings.successMessage + '</p>');
+                                        $('#feedback-module').append(success);
                                     },
                                     error: function error() {
                                         $('#feedback-module').append(settings.tpl.submitError);
@@ -4360,13 +4361,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             }()
         };
     }, {}], 4: [function (require, module, exports) {
-        module.exports = "<div id=feedback-welcome><div class=feedback-logo>Feedback</div><p>Feedback lets you send us suggestions about our products. We welcome problem reports, feature ideas and general comments.</p><p>Start by writing a brief description:</p><textarea id=feedback-note-tmp></textarea><p>Next we'll let you identify areas of the page related to your description.</p><button id=feedback-welcome-next class=\"feedback-next-btn feedback-btn-gray\">Next</button><div id=feedback-welcome-error>Please enter a description.</div><div class=feedback-wizard-close></div></div>";
+        module.exports = "<div id=feedback-welcome><div class=feedback-logo>Feedback</div><p>Feedback lets you send us suggestions about our products. We welcome problem reports, feature ideas and general comments.</p><p>Start by writing a brief description:</p><textarea id=feedback-note-tmp></textarea><p>Next we'll let you identify areas of the page related to your description.</p><button id=feedback-welcome-next class=\"btn btn-success\">Next</button><div id=feedback-welcome-error>Please enter a description.</div><div class=feedback-wizard-close></div></div>";
     }, {}], 5: [function (require, module, exports) {
-        module.exports = "<div id=feedback-highlighter><div class=feedback-logo>Feedback</div><p>Click and drag on the page to help us better understand your feedback. You can move this dialog if it's in the way.</p><button class=\"feedback-sethighlight feedback-active\"><div class=ico></div><span>Highlight</span></button><label>Highlight areas relevant to your feedback.</label><button class=feedback-setblackout><div class=ico></div><span>Black out</span></button><label class=lower>Black out any personal information.</label><div class=feedback-buttons><button id=feedback-highlighter-next class=\"feedback-next-btn feedback-btn-gray\">Next</button> <button id=feedback-highlighter-back class=\"feedback-back-btn feedback-btn-gray\">Back</button></div><div class=feedback-wizard-close></div></div>";
+        module.exports = "<div id=feedback-highlighter><div class=feedback-logo>Feedback</div><p>Click and drag on the page to highlight areas that your feedback is particularly relevant to. This will help us better understand your feedback. You can move this dialog if it's in the way.</p><button class=\"feedback-sethighlight feedback-active\" style=\"display: none\"><div class=ico></div><span>Highlight</span></button> <button class=feedback-setblackout style=\"display: none\"><div class=ico></div><span>Black out</span></button><div class=feedback-buttons><button id=feedback-highlighter-back class=btn>Back</button> <button id=feedback-highlighter-next class=\"btn btn-success\">Next</button></div><div class=feedback-wizard-close></div></div>";
     }, {}], 6: [function (require, module, exports) {
-        module.exports = "<div id=feedback-overview><div class=feedback-logo>Feedback</div><div id=feedback-overview-description><div id=feedback-overview-description-text><h3>Description</h3><h3 class=feedback-additional>Additional info</h3><div id=feedback-additional-none><span>None</span></div><div id=feedback-browser-info><span>Browser Info</span></div><div id=feedback-page-info><span>Page Info</span></div><div id=feedback-page-structure><span>Page Structure</span></div></div></div><div id=feedback-overview-screenshot><h3>Screenshot</h3></div><div class=feedback-buttons><button id=feedback-submit class=\"feedback-submit-btn feedback-btn-blue\">Submit</button> <button id=feedback-overview-back class=\"feedback-back-btn feedback-btn-gray\">Back</button></div><div id=feedback-overview-error>Please enter a description.</div><div class=feedback-wizard-close></div></div>";
+        module.exports = "<div id=feedback-overview><div class=feedback-logo>Feedback</div><div id=feedback-overview-description><div id=feedback-overview-description-text><h3>Details</h3><textarea class=form-control rows=20 id=feedback-overview-note placeholder=\"Please describe what you were trying to do when you encountered a problem and what happened, or give a suggestion.\" data-toggle=popover data-trigger=hover data-placement=left title=\"Problem or suggestion\" data-content=.></textarea></div></div><div id=feedback-overview-screenshot><h3>Screenshot</h3></div><div class=feedback-buttons><button id=feedback-overview-back class=btn>Back</button> <button id=feedback-submit class=\"btn btn-success btn-raised\">Send</button></div><div id=feedback-overview-error>Please describe the problem or give a suggestion.</div><div class=feedback-wizard-close></div></div>";
     }, {}], 7: [function (require, module, exports) {
-        module.exports = "<div id=feedback-submit-error><div class=feedback-logo>Feedback</div><p>Sadly an error occured while sending your feedback. Please try again.</p><button class=\"feedback-close-btn feedback-btn-blue\">OK</button><div class=feedback-wizard-close></div></div>";
+        module.exports = "<div id=feedback-submit-error><div class=feedback-logo>Feedback</div><p>Sadly an error occured while sending your feedback. Please try again.</p><div class=feedback-buttons><button class=\"feedback-wizard-close btn\">OK</button></div><div class=feedback-wizard-close></div></div>";
     }, {}], 8: [function (require, module, exports) {
-        module.exports = "<div id=feedback-submit-success><div class=feedback-logo>Feedback</div><p>Thank you for your feedback. We value every piece of feedback we receive.</p><p>We cannot respond individually to every one, but we will use your comments as we strive to improve your experience.</p><button class=\"feedback-close-btn feedback-btn-blue\">OK</button><div class=feedback-wizard-close></div></div>";
+        module.exports = "<div id=feedback-submit-success><div class=feedback-logo>Feedback</div><p>Thank you for your feedback. It is a valuable contribution, and we hope that you will benefit from our ongoing work to improve the system.</p><div class=feedback-buttons><button class=\"feedback-wizard-close btn\">OK</button></div><div class=feedback-wizard-close></div></div>";
     }, {}] }, {}, [2]);
