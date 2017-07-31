@@ -532,11 +532,12 @@ let EventHandler = utility .EventHandler;
                         post.img = img;
                         post.note = $('#feedback-note').val();
                         var data = {feedback: JSON.stringify(post)};
-                        $.ajax({
+                        settings.postFunction({
                             url: settings.ajaxURL,
                             dataType: 'json',
                             type: 'POST',
                             data: data,
+                            post: post,
                             success: function () {
                                 $('#feedback-module').append(settings.tpl.submitSuccess);
                             },
