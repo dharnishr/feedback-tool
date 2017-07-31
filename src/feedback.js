@@ -32,11 +32,11 @@ let EventHandler = utility .EventHandler;
             onScreenshotTaken: function () {
             },
             tpl: {
-                description: require('../templates/description.html'),
-                highlighter: require('../templates/highlighter.html'),
-                overview: require('../templates/overview.html'),
-                submitSuccess: require('../templates/submitSuccess.html'),
-                submitError: require('../templates/submitError.html')
+                description: require('../templates/description.tmpl'),
+                highlighter: require('../templates/highlighter.tmpl'),
+                overview: require('../templates/overview.tmpl'),
+                submitSuccess: require('../templates/submitSuccess.tmpl'),
+                submitError: require('../templates/submitError.tmpl')
             },
             onClose: function () {
             },

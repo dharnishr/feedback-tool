@@ -15,7 +15,7 @@ var path = require('path'),
 var paths = {
     js: ['./src/**/*.js'],
     less: ['./style/**/*.less'],
-    templates: ['./templates/**/*.html']
+    templates: ['./templates/**/*.tmpl']
 };
 
 // LESS/CSS section.
@@ -38,7 +38,8 @@ gulp.task('css', function () {
 gulp.task('js', function() {
     gulp.src('./src/feedback.js')
         .pipe(browserify({
-            transform: stringify({ extensions: ['.html'], minify: true })
+            standalone: 'feedback-tool',
+            transform: stringify({ extensions: ['.tmpl'], minify: true })
         }))
         .pipe(babel())
         .pipe(gulp.dest('./dist'))
