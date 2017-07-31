@@ -486,9 +486,7 @@ let EventHandler = utility .EventHandler;
                                     $('#feedback-overview').toggleClass('feedback-desktop', false);
                                     $('#feedback-overview').toggleClass('feedback-mobile', true);
                                 }
-                                $('#feedback-overview-description-text>textarea').remove();
                                 $('#feedback-overview-screenshot>img').remove();
-                                $('<textarea id="feedback-overview-note">' + $('#feedback-note').val() + '</textarea>').insertAfter('#feedback-overview-description-text h3:eq(0)');
                                 $('#feedback-overview-screenshot').append('<img class="feedback-screenshot" src="' + img + '" />');
                             }
                             else {
