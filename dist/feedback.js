@@ -3526,6 +3526,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         // Version 2.0
 
         var html2canvas = require('html2canvas/dist/html2canvas');
+        window.html2canvas = html2canvas;
         var utility = require('./utility');
         var EventHandler = utility.EventHandler;
 

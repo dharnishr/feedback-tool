@@ -38,7 +38,6 @@ gulp.task('css', function () {
 gulp.task('js', function() {
     gulp.src('./src/feedback.js')
         .pipe(browserify({
-            standalone: 'feedback-tool',
             transform: stringify({ extensions: ['.tmpl'], minify: true })
         }))
         .pipe(babel())

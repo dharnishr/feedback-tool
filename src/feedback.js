@@ -4,6 +4,7 @@
 // Version 2.0
 
 let html2canvas = require('html2canvas/dist/html2canvas');
+window.html2canvas = html2canvas;
 let utility = require('./utility');
 let EventHandler = utility .EventHandler;
 
