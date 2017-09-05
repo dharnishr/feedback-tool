@@ -4,7 +4,7 @@
 .feedback-btn {
   font-size: 14px;
   position: fixed;
-  bottom: 50%;
+  bottom: 20%;
   right: -42px;
   width: auto;
   transform: rotate(-90deg);
@@ -113,22 +113,21 @@ div.feedback-wizard-close:hover {  opacity: 1 }
   right: 100px;
   position: fixed;
   width: 540px;
-  height: 210px;
+  height: auto;
+  min-height: 210px;
 }
 #feedback-overview {
   display: none;
-  top: 10%;
-  left: 50%;
-  margin-left: -420px;
+  bottom: 100px;
+  right: 100px;
   position: fixed;
-  width: 840px!important;
+  width: 540px!important;
   height: auto;
 }
 #feedback-submit-error,
 #feedback-submit-success {
-  top: 30%;
-  left: 50%;
-  margin-left: -300px;
+  bottom: 100px;
+  right: 100px;
   display: block;
   position: fixed;
   width: 600px;
@@ -256,6 +255,7 @@ div.feedback-wizard-close:hover {  opacity: 1 }
   clear: both;
 }
 #feedback-module h3 {
+  display: none !important;
   font-weight: bold;
   font-size: 15px;
   margin: 8px 0;
@@ -263,12 +263,15 @@ div.feedback-wizard-close:hover {  opacity: 1 }
 .feedback-additional {  margin-bottom: 20px!important }
 #feedback-overview-description {  float: left }
 #feedback-overview-note {
-  width: 314px;
+  width: 440px;
   padding: 4px;
   max-height: 410px;
   outline: none;
 }
-#feedback-overview-screenshot {  float: right }
+#feedback-overview-screenshot {
+  display: none !important;
+  float: right;
+}
 .feedback-screenshot {
   max-width: 396px;
   padding: 1px;

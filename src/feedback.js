@@ -48,12 +48,14 @@ let EventHandler = utility .EventHandler;
         }, options);
         var supportedBrowser = !!window.HTMLCanvasElement;
         var isFeedbackButtonNative = settings.feedbackButton == '.feedback-btn';
+        let betterBrowser = !/Edge|Trident/.exec(navigator.appVersion);
+        let isIE = /Trident/.exec(navigator.appVersion);
         var _html2canvas = false;
         // Old code have undeclared global, ugly as hell.
         let moduleStyle, canvasAttr, _top, _left, _bottom, _right, rect, drag, highlight, post, dtype, ignore, _canvas, _ctx, canDraw;
         if (supportedBrowser) {
             if (isFeedbackButtonNative) {
-                $('body').append('<button class="feedback-btn feedback-btn-gray">' + settings.initButtonText + '</button>');
+                $('body').append('<button class="feedback-btn feedback-btn-gray no-print">' + settings.initButtonText + '</button>');
             }
             $(document).on('click', settings.feedbackButton, function () {
                 if (isFeedbackButtonNative) {
@@ -69,12 +71,13 @@ let EventHandler = utility .EventHandler;
                     tpl += settings.tpl.description;
                 }
 
-                tpl +=  settings.tpl.highlighter + settings.tpl.overview + '<canvas id="feedback-canvas"></canvas><div id="feedback-helpers"></div><input id="feedback-note" name="feedback-note" type="hidden"></div>';
+                if (betterBrowser) {
+                    tpl += settings.tpl.highlighter;
+                }
+
+                tpl += settings.tpl.overview + '<canvas id="feedback-canvas"></canvas><div id="feedback-helpers"></div><input id="feedback-note" name="feedback-note" type="hidden"></div>';
 
                 $('body').append(tpl);
-
-                let feedback_highlighter_event_handler = new EventHandler($('#feedback-highlighter').get(0));
-                let feedback_highlighter_parent_event_handler = new EventHandler($('#feedback-highlighter').get(0).parentNode);
 
                 moduleStyle = {
                     'position': 'absolute',
@@ -89,58 +92,67 @@ let EventHandler = utility .EventHandler;
                 $('#feedback-module').css(moduleStyle);
                 $('#feedback-canvas').attr(canvasAttr).css('z-index', '30000');
 
-                if (!settings.initialBox) {
-                    $('#feedback-highlighter-back').remove();
-                    canDraw = true;
-                    $('#feedback-canvas').css('cursor', 'crosshair');
-                    $('#feedback-helpers').show();
-                    $('#feedback-welcome').hide();
-                    $('#feedback-highlighter').show();
-                }
+                if (betterBrowser) {
+                    let feedback_highlighter_event_handler = new EventHandler($('#feedback-highlighter').get(0));
+                    let feedback_highlighter_parent_event_handler = new EventHandler($('#feedback-highlighter').get(0).parentNode);
 
-                if (settings.isDraggable) {
-                    let feedback_highlighter_move_handler = null;
-                    feedback_highlighter_event_handler.on_pointer_events(e => {
-                        let point = e.touches ? e.touches[0] : e;
-                        var $d = $("#feedback-highlighter").addClass('feedback-draggable'),
-                            drag_h = $d.outerHeight(),
-                            drag_w = $d.outerWidth(),
-                            pos_y = $d.offset().top + drag_h - point.pageY,
-                            pos_x = $d.offset().left + drag_w - point.pageX;
-                        $d.css('z-index', 40000);
+                    if (!settings.initialBox) {
+                        $('#feedback-highlighter-back').remove();
+                        canDraw = true;
+                        $('#feedback-canvas').css('cursor', 'crosshair');
+                        $('#feedback-helpers').show();
+                        $('#feedback-welcome').hide();
+                        $('#feedback-highlighter').show();
+                    }
 
-                        feedback_highlighter_move_handler = function (e) {
+                    if (settings.isDraggable) {
+                        let feedback_highlighter_move_handler = null;
+                        feedback_highlighter_event_handler.on_pointer_events(e => {
                             let point = e.touches ? e.touches[0] : e;
-                            _top = point.pageY + pos_y - drag_h;
-                            _left = point.pageX + pos_x - drag_w;
-                            _bottom = drag_h - point.pageY;
-                            _right = drag_w - point.pageX;
+                            var $d = $("#feedback-highlighter").addClass('feedback-draggable'),
+                                drag_h = $d.outerHeight(),
+                                drag_w = $d.outerWidth(),
+                                pos_y = $d.offset().top + drag_h - point.pageY,
+                                pos_x = $d.offset().left + drag_w - point.pageX;
+                            $d.css('z-index', 40000);
 
-                            if (_left < 0) _left = 0;
-                            if (_top < 0) _top = 0;
-                            if (_right > $(window).width())
-                                _left = $(window).width() - drag_w;
-                            if (_left > $(window).width() - drag_w)
-                                _left = $(window).width() - drag_w;
-                            if (_bottom > $(document).height())
-                                _top = $(document).height() - drag_h;
-                            if (_top > $(document).height() - drag_h)
-                                _top = $(document).height() - drag_h;
+                            feedback_highlighter_move_handler = function (e) {
+                                let point = e.touches ? e.touches[0] : e;
+                                _top = point.pageY + pos_y - drag_h;
+                                _left = point.pageX + pos_x - drag_w;
+                                _bottom = drag_h - point.pageY;
+                                _right = drag_w - point.pageX;
 
-                            $('.feedback-draggable').offset({
-                                top: _top,
-                                left: _left
-                            }).on("mouseup", function () {
-                                $(this).removeClass('feedback-draggable');
-                            });
-                        };
+                                if (_left < 0) _left = 0;
+                                if (_top < 0) _top = 0;
+                                if (_right > $(window).width())
+                                    _left = $(window).width() - drag_w;
+                                if (_left > $(window).width() - drag_w)
+                                    _left = $(window).width() - drag_w;
+                                if (_bottom > $(document).height())
+                                    _top = $(document).height() - drag_h;
+                                if (_top > $(document).height() - drag_h)
+                                    _top = $(document).height() - drag_h;
 
-                        feedback_highlighter_parent_event_handler.on_pointer_events(feedback_highlighter_move_handler, 'move');
-                        e.preventDefault();
-                    }, 'down').on_pointer_events(e => {
-                        $("#feedback-highlighter").removeClass('feedback-draggable');
-                        feedback_highlighter_parent_event_handler.off_pointer_events(feedback_highlighter_move_handler, 'move');
-                    }, 'up');
+                                $('.feedback-draggable').offset({
+                                    top: _top,
+                                    left: _left
+                                }).on("mouseup", function () {
+                                    $(this).removeClass('feedback-draggable');
+                                });
+                            };
+
+                            feedback_highlighter_parent_event_handler.on_pointer_events(feedback_highlighter_move_handler, 'move');
+                            e.preventDefault();
+                        }, 'down').on_pointer_events(e => {
+                            $("#feedback-highlighter").removeClass('feedback-draggable');
+                            feedback_highlighter_parent_event_handler.off_pointer_events(feedback_highlighter_move_handler, 'move');
+                        }, 'up');
+                    }
+                } else {
+                  $('#feedback-overview').show()
+                      .find(isIE? 'input' : 'input,textarea')
+                      .first().focus();
                 }
 
                 var ctx = $('#feedback-canvas')[0].getContext('2d');
@@ -481,7 +493,9 @@ let EventHandler = utility .EventHandler;
                             settings.onScreenshotTaken(post.img);
                             if (settings.showDescriptionModal) {
                                 $('#feedback-canvas-tmp').remove();
-                                $('#feedback-overview').show();
+                                $('#feedback-overview').show()
+                                    .find(isIE? 'input' : 'input,textarea')
+                                    .first().focus();
                                 if (!utility.isMobile) {
                                     $('#feedback-overview').toggleClass('feedback-desktop', true);
                                     $('#feedback-overview').toggleClass('feedback-mobile', false);
@@ -510,6 +524,8 @@ let EventHandler = utility .EventHandler;
                     $('#feedback-helpers').show();
                     $('#feedback-highlighter').show();
                     $('#feedback-overview-error').hide();
+                    if (!betterBrowser)
+                        close();
                 });
 
                 $(document).on('keyup', '#feedback-note-tmp,#feedback-overview-note', function (e) {
