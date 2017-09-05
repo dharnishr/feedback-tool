@@ -13,6 +13,7 @@ let EventHandler = utility .EventHandler;
     $.feedback = function (options) {
 
         var settings = $.extend({
+            additionalInfo: {},
             ajaxURL: '',
             postBrowserInfo: true,
             postHTML: true,
@@ -150,7 +151,7 @@ let EventHandler = utility .EventHandler;
                 rect = {};
                 drag = false;
                 highlight = 1,
-                    post = {};
+                post = $.extend({}, settings.additionalInfo);
 
                 if (settings.postBrowserInfo) {
                     post.browser = {};
